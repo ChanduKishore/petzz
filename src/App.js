@@ -33,7 +33,7 @@ return(<>
         </nav>
        
         <Routes>
-            <Route path='/' element={<Home user={user}/>}/>
+            <Route path='/*' element={<Home user={user}/>}/>
             <Route path='/profile' element={user?<SellerProfile navigate={navigate}/>:<Navigate to='/'/>} />
             <Route path='/register' element={user?<Navigate to='/profile'/>:<Register setUser={setUser}/>} />
             <Route path='/login' element={user?<Navigate to='/profile'/>:<Login setUser={setUser}/>} />

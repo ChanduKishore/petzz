@@ -4,10 +4,9 @@ import AddPetForm from './addPetForm';
 import ProfileUpdateForm from './profileUpdateForm'
 import LoadingScreen from './loadingScreen'
 import ProductsList from './productsList';
-import Auth from '../services/auth'
 import {getAuth} from 'firebase/auth'
 
-function SellerProfile({navigate}) {
+function SellerProfile() {
   const auth =getAuth();
   
   const [uid,setUid]=useState(auth.currentUser?auth.currentUser.uid:null)
