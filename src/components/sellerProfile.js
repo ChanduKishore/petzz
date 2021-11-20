@@ -3,13 +3,12 @@ import DB from '../services/database'
 import AddPetForm from './addPetForm';
 import ProfileUpdateForm from './profileUpdateForm'
 import LoadingScreen from './loadingScreen'
-import ProductsList from './productsList';
+import SellerProductsList from './sellerProductsList';
 import {getAuth} from 'firebase/auth'
 
-function SellerProfile() {
+function SellerProfile({uid,userId}) {
   const auth =getAuth();
   
-  const [uid,setUid]=useState(auth.currentUser?auth.currentUser.uid:null)
   const [loading,setLoading]=useState(true)
   const [seller, setSeller]=useState('')
   const [addPet,setAddPet]=useState(false)
@@ -20,15 +19,18 @@ function SellerProfile() {
       {DB.getData('Users',uid).then(data => {
         setSeller(data)
         setLoading(false)})
-      }
-    },[])
+      .catch(e=> console.log(e.message))}
+      
+    },[uid])
 
 
   return (
     (loading)
         ?<LoadingScreen/>
         :<div >
-    <p>Welcome <strong>{seller.username}! </strong></p>
+    {userId===uid
+    ?<p>Welcome <strong>{seller.username}! </strong></p>
+  :<strong>{seller.username}</strong>}
     
     {profileUpdate?
     <ProfileUpdateForm 
@@ -42,9 +44,12 @@ function SellerProfile() {
       <p>Mobile: {seller.mobile}</p>
       <p>Address: {seller.address}</p>
      </div>)}
-    
+    {(userId !== uid)
+    ?<h2>seller products</h2>
+     :<>
      <button onClick={()=>setProfileUpdate(true)}> Edit Profile</button>
      <button onClick={()=>setAddPet(true)}> Add Pet</button>
+     </> }
     {addPet
       ?<AddPetForm 
           petsObj={seller.pets} 
@@ -52,12 +57,12 @@ function SellerProfile() {
           setAddPet={setAddPet}
           seller={seller}
           setSeller={setSeller}
-          user={uid}/>
+          uid={uid}/>
           :''}
 
     {seller.pets
         ?
-        <ProductsList title='Pets' listObj={seller.pets}/>
+        <SellerProductsList title='Pets' productList={seller.pets}/>
      :''}
    </div>
   );

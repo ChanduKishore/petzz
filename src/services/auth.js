@@ -1,4 +1,5 @@
 import { getAuth,signOut,onAuthStateChanged,createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth";
+import { Navigate } from "react-router";
 import DB from '../services/database'
 
 const auth = getAuth();
@@ -20,10 +21,11 @@ async function trackuserSigninStatus(setUserUid){
       });
   }
 
-  function logout(setUser){
+  function logout(setUser,navigate){
     signOut(auth).then(() => {
     console.log('logout')
     setUser(null) 
+    navigate('/', {replace:true})
 // Sign-out successful.
 }).catch((error) => {
 // An error happened.

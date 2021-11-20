@@ -3,7 +3,7 @@ import {v4 as uuidv4} from 'uuid'
 import Storage from '../services/storage';
 import DB from '../services/database'
 
-export default function AddPetForm({petsObj,addPet,setAddPet,seller,setSeller,user}){
+export default function AddPetForm({petsObj,addPet,setAddPet,seller,setSeller,uid}){
  
   const [img,setImg]=useState('')
     const [category,setCategory]=useState('')
@@ -26,7 +26,7 @@ export default function AddPetForm({petsObj,addPet,setAddPet,seller,setSeller,us
          
           //console.log(pets)
           //add data to seller database
-          DB.updateData('Users',user.uid,{pets}).then(()=>{
+          DB.updateData('Users',uid,{pets}).then(()=>{
               const Seller ={...seller, pets }
               setSeller(Seller)
               console.log('pet added to database')
@@ -34,8 +34,17 @@ export default function AddPetForm({petsObj,addPet,setAddPet,seller,setSeller,us
             })
 
           //adding data to public database
-          const pet ={[id]:{id,name,description,price,image:imgURL,ownerId:user.uid}}
-          DB.updateData('Services',"Pets",pet).catch(e=>console.log(e.message))
+          const pet ={id,name,
+            description,price,
+            image:imgURL,
+            breed:'',
+            weight:'',
+            age:'',
+            ownerId:uid,
+            owner:seller.username,
+            mobile:seller.mobile,
+            address:seller.address}
+          DB.addData("Pets",id,pet).catch(e=>console.log(e.message))
       })
       console.log('image file uploaded')
   

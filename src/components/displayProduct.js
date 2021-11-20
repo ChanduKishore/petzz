@@ -1,16 +1,19 @@
-import {Link} from 'react-router-dom'
+import {Link,Outlet} from 'react-router-dom'
 
-export default function DisplayProduct({pet}){
+export default function DisplayProduct({product}){
+
+
     return(
       <figure style={{width:'300px'}}>
-        <img src={pet.image} alt='image' style={{maxWidth:'100%'}}/>
+        <img src={product.image} alt='image' style={{maxWidth:'100%'}}/>
         <figcaption  style={{wordWrap:'break-word'}}>
           
-          <center><strong>{pet.name}</strong></center>
+          <center><strong>{product.name}</strong></center>
           <br/>
-          {pet.description}
+          {product.description}
           <br/>
-          <center>price: <strong>{pet.price}</strong></center>
+          <center>price: <strong>{product.price}</strong></center>
+         <Link to={product.id}>show details</Link>
          
         </figcaption>
       </figure>

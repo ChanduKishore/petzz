@@ -1,14 +1,14 @@
 import { useState } from "react"
 import InputFeild from "./inputFeild"
 import Auth from '../services/auth'
-export default function Register({setUser}){
+export default function Register({setUid}){
     const [username,setUsername]=useState('')
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
     const [mobile,setMobile]=useState('')
     const [address, setAddress]=useState('')
  
-    return(<form onSubmit={(e)=>Auth.signUp(e,setUser,username,email,password,mobile,address)}>
+    return(<form onSubmit={(e)=>Auth.signUp(e,setUid,username,email,password,mobile,address)}>
         <h1>Register</h1>
         <InputFeild 
             label='Username'

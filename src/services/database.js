@@ -1,8 +1,9 @@
-import { getFirestore, doc, updateDoc, collection, setDoc,getDoc} from "firebase/firestore"
+import { getFirestore, doc, updateDoc, collection,where, setDoc,getDoc,query,getDocs} from "firebase/firestore"
 const db = getFirestore();
 
-async function getData(collectionName,username){
-    const docRef = doc(db, collectionName, username);
+async function getData(collectionName,docName){
+  console.log('getting data from database',docName)
+    const docRef = doc(db, collectionName, docName);
   const docSnap = await getDoc(docRef);
   
   if (docSnap.exists()) {
@@ -13,6 +14,38 @@ async function getData(collectionName,username){
     console.log("No such document!");
   }
   }
+
+  async function getDocsWithQuery(collectionName,searchFeild,value){
+    console.log('getting specified doc from database')
+
+      const Query = query(collection(db, collectionName),where(searchFeild,'==',value))
+    const docSnap = await getDocs(Query);
+    const docArray=[]
+    docSnap.forEach(doc=>{
+      console.log("Document data:", doc.data());
+      docArray.push(doc.data())
+    })
+      
+   return docArray
+    }
+
+  async function getCollection(collectionName){
+      console.log('getting a collection')
+  
+        const Query = query(collection(db, collectionName))
+      const docSnap = await getDocs(Query);
+      const docArray=[]
+      docSnap.forEach(doc=>{
+        docArray.push(doc.data())
+      })
+        
+     return docArray
+      }
+
+
+  // addData function add document to a specified collection 
+  //like you can use thi function to create user to the users collection or pet to pets collection
+  //to use this function you need to give collection name (where to add doc) and document name (name of doc ) and data(as an object)
   
   async function addData(collectionName,username,dataObj){
     // Add a new document with a generated id.
@@ -20,11 +53,13 @@ async function getData(collectionName,username){
   console.log("Document written successfuly");
   }
   
+  
+  
+  // update functions updates data in already existed doc 
   async function updateData(collectionName,username,data){
     const usernameRef = doc(db, collectionName, username);
   
   // Set the "capital" field of the city 'DC'
   await updateDoc(usernameRef, data);
   }
-  
-  export default {addData,getData,updateData} 
+  export default {addData,getData,updateData,getDocsWithQuery,getCollection} 

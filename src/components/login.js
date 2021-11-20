@@ -2,12 +2,12 @@ import { useState } from "react";
 import InputFeild from './inputFeild'
 import Auth from '../services/auth'
 
-export default function Login({setUser}){
+export default function Login({setUid}){
     const [email,setEmail]=useState('')
     const [password,setPassword]=useState('')
 
     
-    return(<form onSubmit={(e)=>Auth.login(e,setUser,email,password)}>
+    return(<form onSubmit={(e)=>Auth.login(e,setUid,email,password)}>
         <h1>Login</h1>
         
             <InputFeild 

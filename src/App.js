@@ -7,41 +7,42 @@ import Home from './components/home'
 import Register from './components/register'
 import Login from './components/login'
 import Auth from './services/auth'
-
+import ProductDetails from './components/productDetails';
+import SellerDetails from './components/sellerDetails';
 export default function App(){
-    const [user,setUser]=useState(null)
+    const [uid,setUid]=useState(null)
     let navigate =useNavigate();
     
-   console.log(user)
+   console.log(uid)
  useEffect(()=>{
-     Auth.trackuserSigninStatus(setUser)},[user])
+     Auth.trackuserSigninStatus(setUid)},[uid])
 return(<>
     <center><h1>Petzz</h1></center>
     
         <nav>
             <Link to="/">Home</Link>
-            {user
+            {uid
             ?<><Link to="/profile">Profile</Link>
-                <button onClick={()=>Auth.logout(setUser)}>Logout</button>
+                <button onClick={()=>Auth.logout(setUid,navigate)}>Logout</button>
                 </>
             :<>
             <Link to="/register">Register</Link>
             <Link to="/login">|Login</Link>
-
             </>
             }
         </nav>
        
         <Routes>
-            <Route path='/*' element={<Home user={user}/>}/>
-            <Route path='/profile' element={user?<SellerProfile navigate={navigate}/>:<Navigate to='/'/>} />
-            <Route path='/register' element={user?<Navigate to='/profile'/>:<Register setUser={setUser}/>} />
-            <Route path='/login' element={user?<Navigate to='/profile'/>:<Login setUser={setUser}/>} />
-            
+            <Route path='/*' element={<Home uid={uid}/>}>
+            <Route path='pets/:productID' element={<ProductDetails/>}/>
+            </Route>
+            <Route path='/profile' element={<SellerProfile uid={uid} userId={uid}/>} />
+            <Route path='/register' element={uid?<Navigate to='/profile'/>:<Register setUid={setUid}/>} />
+            <Route path='/login' element={uid?<Navigate to='/profile'/>:<Login setUid={setUid}/>} />
+            <Route path='/Profiles/:profileID' element={<SellerDetails uid={uid}/>}/>
         </Routes>
     
     
     
-    </>
-)
+    </>)
 }
