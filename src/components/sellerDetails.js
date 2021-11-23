@@ -1,11 +1,9 @@
-import { useParams } from "react-router-dom"
-import SellerProfile from "./sellerProfile"
-export default function SellerDetails({uid}){
- const {profileID}= useParams()
+import { useState } from "react"
+import DisplayProfile from "./displayProfile"
+import LoadingScreen from "./loadingScreen"
+export default function SellerDetails(){
 
     return(
-    <>
     
-    <SellerProfile uid={profileID} userId={uid}/>
-    </>)
+     <DisplayProfile uid={profileID}/>)
 }
