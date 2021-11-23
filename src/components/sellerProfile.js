@@ -7,7 +7,7 @@ import SellerProductsList from './sellerProductsList';
 import {getAuth} from 'firebase/auth'
 import '../App.css'
 
-function SellerProfile({uid,userId}) {
+function SellerProfile({uid}) {
   const auth =getAuth();
   
   const [loading,setLoading]=useState(true)
@@ -34,10 +34,7 @@ function SellerProfile({uid,userId}) {
     (loading)
         ?<LoadingScreen/>
         :<div >
-    {userId===uid
-    ?<p>Welcome <strong>{seller.username}! </strong></p>
-  :<strong>{seller.username}</strong>}
-    
+     <p>Welcome <strong>{seller.username}! </strong></p>
     {profileUpdate?
     <ProfileUpdateForm 
       setProfileUpdate={setProfileUpdate} 
@@ -45,20 +42,17 @@ function SellerProfile({uid,userId}) {
       setSeller={setSeller}
       seller={seller}
       uid={uid}/>
-    :(<div className='userProfile'> 
+    :<div className='userProfile'> 
         <img src={seller.profilePic} alt='profile picture' className='profilePic'/>
         <div>
           <p>Full Name: {seller.fullname}</p>
           <p>Mobile: {seller.mobile}</p>
           <p>Address: {seller.address}</p>
         </div>
-     </div>)}
-    {(userId !== uid)
-    ?<h2>seller products</h2>
-     :<>
+     </div>}
+  
      <button onClick={()=>setProfileUpdate(true)}> Edit Profile</button>
      <button onClick={()=>setAddPet(true)}> Add Pet</button>
-     </> }
      
     {addPet
       ?<AddPetForm 

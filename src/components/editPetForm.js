@@ -7,7 +7,7 @@ export default function EditPetForm({productList,pet,setEditPet,uid,id}){
  
   const [img,setImg]=useState(pet.image)
     const [category,setCategory]=useState(pet.category)
-    const [file,setFile]=useState(null)
+    const [file,setFile]=useState('')
     const [name,setName]=useState(pet.name)
     const [price,setPrice]=useState(pet.price)
     const [description,setDescription]=useState(pet.description)
@@ -50,7 +50,7 @@ export default function EditPetForm({productList,pet,setEditPet,uid,id}){
       e.preventDefault()
        
                 
-            if(updateImage){ // seller wants to update data and image as well
+            if(file){ // seller wants to update data and image as well
                 Storage.uploadImg(file,'Pets',id,setUpdateStatus) //then first upload image and the retreive that image url and then use that image url to store in data base
                 .then(() => {
                 Storage.downloadImg(`Pets/${id}.jpg`,setUpdateStatus)
@@ -82,15 +82,10 @@ export default function EditPetForm({productList,pet,setEditPet,uid,id}){
     }
     return(
       <form onSubmit={updatePet}>
-      <img src={img} style={{ width:'200px'}} required />
-      {updateImage
-      ?<>
-      <input type='file' onChange={onImageChange} required/>
-      <button onClick={()=>setUpdateImage(false)}>Cancel</button>
-      </>
-      :<div><button onClick={()=>setUpdateImage(true)}>Change image</button></div>}
-
-          
+      <img src={img} style={{ width:'200px'}} />
+   
+      <input type='file' onChange={onImageChange} />
+    
           <label> Category</label>
           <select id='category' onChange={(e)=>setCategory(e.target.value)} value={category} required >
             <option value=''>__Choose__</option>
