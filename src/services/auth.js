@@ -32,8 +32,9 @@ async function trackuserSigninStatus(setUserUid){
 });
 }
 
-function login(e,setUser,email,password){
+function login(e,setUser,email,password,SetLoginStatus){
     e.preventDefault()
+    SetLoginStatus('logging in')
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in 
@@ -46,6 +47,11 @@ function login(e,setUser,email,password){
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log(errorMessage)
+        SetLoginStatus(errorMessage+' try again!')
+        if(errorCode === 'auth/network-request-failed' || errorCode === 'auth/timeout'){
+          SetLoginStatus('check your internet connection')
+        }
+        
       });
     }   
 
@@ -58,7 +64,12 @@ function signUp(e,setUser,username,email,password,mobile,address){
          // Signed in 
          const user = userCredential.user;
          console.log('user created')
-         const data={username,mobile,address,fullname:username}
+         const data={
+                    username,
+                    mobile,
+                    address,
+                    fullname:username,
+                    profilePic:'https://firebasestorage.googleapis.com/v0/b/petzz-2356c.appspot.com/o/profiles%2Fmale.png?alt=media&token=f37daf04-2224-427e-9835-d3e0f9b13b27'}
          DB.addData('Users',user.uid,data).then(()=>{
              console.log('data stored to db')
              setUser(user)

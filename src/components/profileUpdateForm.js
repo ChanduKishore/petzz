@@ -1,19 +1,28 @@
 import { useState } from "react"
 import DB from '../services/database'
+import DataProccessing from "./dataProccessing"
 
-export default function ProfileUpdateForm({setProfileUpdate,profileUpdate, setSeller,seller,user}){
+export default function ProfileUpdateForm({setProfileUpdate,profileUpdate, setSeller,seller,uid}){
     
   const [fullname,setFullName]=useState('')
     const [mobile,setMobile]=useState('')
     const [address, setAddress]=useState('')
+    const[updateStatus,setUpdateStatus]=useState('')
+
   function updateProfile(e){
     e.preventDefault()
     const data={fullname,mobile,address}
     setSeller({...seller, fullname,mobile,address})
-    setProfileUpdate(!profileUpdate)
-    DB.updateData('Users',user.uid,data)
+    DB.updateData('Users',uid,data,setUpdateStatus)
+    DB.getDocsWithQuery('Pets',"ownerId",uid)
+    .then(pets=>{
+        pets.forEach((pet)=>{
+          DB.updateData("Pets",pet.id,{owner:fullname,mobile,address},setUpdateStatus)
+        })
+        console.log('profileUpdate',pets,uid)
+         setProfileUpdate(!profileUpdate)
+                })
   }
-  console.log(fullname,mobile,address)
   return(<form onSubmit={updateProfile}>
       
   <label>Full Name </label>
@@ -28,6 +37,7 @@ export default function ProfileUpdateForm({setProfileUpdate,profileUpdate, setSe
   <input type='text' onChange={(e)=>setAddress(e.target.value)} value={address} required/>
   <button type='submit'>Update profile</button>
   <button onClick={()=>setProfileUpdate(false)}>Cancel</button>
+  <DataProccessing label={updateStatus}/>
 
 </form>)
 }

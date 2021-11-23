@@ -5,6 +5,7 @@ import ProfileUpdateForm from './profileUpdateForm'
 import LoadingScreen from './loadingScreen'
 import SellerProductsList from './sellerProductsList';
 import {getAuth} from 'firebase/auth'
+import '../App.css'
 
 function SellerProfile({uid,userId}) {
   const auth =getAuth();
@@ -13,10 +14,15 @@ function SellerProfile({uid,userId}) {
   const [seller, setSeller]=useState('')
   const [addPet,setAddPet]=useState(false)
   const [profileUpdate,setProfileUpdate]=useState(false)
+  console.log('seller details',uid)
+
+
   
   useEffect(()=>{
+    
     if(uid)
-      {DB.getData('Users',uid).then(data => {
+      {console.log('getting user data')
+        DB.getData('Users',uid).then(data => {
         setSeller(data)
         setLoading(false)})
       .catch(e=> console.log(e.message))}
@@ -38,11 +44,14 @@ function SellerProfile({uid,userId}) {
       profileUpdate={profileUpdate}
       setSeller={setSeller}
       seller={seller}
-      user={uid}/>
-    :(<div> 
-      <p>Full Name: {seller.fullname}</p>
-      <p>Mobile: {seller.mobile}</p>
-      <p>Address: {seller.address}</p>
+      uid={uid}/>
+    :(<div className='userProfile'> 
+        <img src={seller.profilePic} alt='profile picture' className='profilePic'/>
+        <div>
+          <p>Full Name: {seller.fullname}</p>
+          <p>Mobile: {seller.mobile}</p>
+          <p>Address: {seller.address}</p>
+        </div>
      </div>)}
     {(userId !== uid)
     ?<h2>seller products</h2>
@@ -50,6 +59,7 @@ function SellerProfile({uid,userId}) {
      <button onClick={()=>setProfileUpdate(true)}> Edit Profile</button>
      <button onClick={()=>setAddPet(true)}> Add Pet</button>
      </> }
+     
     {addPet
       ?<AddPetForm 
           petsObj={seller.pets} 
@@ -59,10 +69,10 @@ function SellerProfile({uid,userId}) {
           setSeller={setSeller}
           uid={uid}/>
           :''}
-
+    
     {seller.pets
         ?
-        <SellerProductsList title='Pets' productList={seller.pets}/>
+        <SellerProductsList title='Pets' productList={seller.pets} uid={uid}/>
      :''}
    </div>
   );

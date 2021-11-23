@@ -1,14 +1,14 @@
-import DisplayProduct from "./displayProduct"
+import SellerProduct from "./sellerProduct"
 
 
-export default function SellerProductsList({title,productList}){
+export default function SellerProductsList({title,productList,uid}){
     console.log(productList,title)
 
    return(
        <>
         <h2>{title}</h2>
           {(productList.length!==0 )
-          ?productList.map(obj=><DisplayProduct key={obj.id} product={obj}/>)
+          ?productList.map(obj=><SellerProduct key={obj.id} product={obj} productList={productList} uid={uid}/>)
           :<h2>NO data available</h2>}
           </>)
   }

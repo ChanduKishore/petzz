@@ -13,7 +13,7 @@ export default function DisplayProduct({product}){
           {product.description}
           <br/>
           <center>price: <strong>{product.price}</strong></center>
-         <Link to={product.id}>show details</Link>
+         <Link to={`/pets/${product.id}`}>show details</Link>
          
         </figcaption>
       </figure>

@@ -47,19 +47,22 @@ async function getData(collectionName,docName){
   //like you can use thi function to create user to the users collection or pet to pets collection
   //to use this function you need to give collection name (where to add doc) and document name (name of doc ) and data(as an object)
   
-  async function addData(collectionName,username,dataObj){
+  async function addData(collectionName,docName,dataObj){
     // Add a new document with a generated id.
-  const docRef = await setDoc(doc(db, collectionName,username), dataObj);
+  const docRef = await setDoc(doc(db, collectionName,docName), dataObj);
   console.log("Document written successfuly");
   }
   
   
   
   // update functions updates data in already existed doc 
-  async function updateData(collectionName,username,data){
+  async function updateData(collectionName,username,data,setUpdateStatus=''){
+    setUpdateStatus('writing data to database')
     const usernameRef = doc(db, collectionName, username);
   
   // Set the "capital" field of the city 'DC'
-  await updateDoc(usernameRef, data);
+  await updateDoc(usernameRef, data)
+  .then(()=>{setUpdateStatus('succcess!')})
+  .catch(e=> setUpdateStatus(e.message));
   }
   export default {addData,getData,updateData,getDocsWithQuery,getCollection} 

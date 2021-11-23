@@ -1,2 +1,44 @@
 label,input{display:block}
 button{ margin-bottom:20px}
+body{
+    padding:20px
+}
+.profilePic{
+    width:150px;
+}
+.userProfile{
+    display: flex;
+    align-items: center;
+}
+.userProfile div{
+    margin:0 20px;
+}
+footer{
+    height:50px;
+}
+
+nav{
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+}
+.justify-center{
+    justify-content: center;
+}
+.nav *{
+    margin: 0 20px;
+}
+
+.link-active{
+    background:black;
+    color:white;
+}
+.link{
+    color:black
+}
+center li{
+    text-align: left;
+    padding:5px 0;
+
+}

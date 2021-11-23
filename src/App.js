@@ -8,12 +8,11 @@ import Register from './components/register'
 import Login from './components/login'
 import Auth from './services/auth'
 import ProductDetails from './components/productDetails';
-import SellerDetails from './components/sellerDetails';
+import DisplayProfile from './components/displayProfile';
 export default function App(){
     const [uid,setUid]=useState(null)
     let navigate =useNavigate();
     
-   console.log(uid)
  useEffect(()=>{
      Auth.trackuserSigninStatus(setUid)},[uid])
 return(<>
@@ -22,13 +21,13 @@ return(<>
         <nav>
             <Link to="/">Home</Link>
             {uid
-            ?<><Link to="/profile">Profile</Link>
-                <button onClick={()=>Auth.logout(setUid,navigate)}>Logout</button>
-                </>
-            :<>
+            ?<div><Link to="/profile">Profile</Link>
+                <button className='logout' onClick={()=>Auth.logout(setUid,navigate)}>Logout</button>
+                </div>
+            :<div>
             <Link to="/register">Register</Link>
             <Link to="/login">|Login</Link>
-            </>
+            </div>
             }
         </nav>
        
@@ -39,7 +38,7 @@ return(<>
             <Route path='/profile' element={<SellerProfile uid={uid} userId={uid}/>} />
             <Route path='/register' element={uid?<Navigate to='/profile'/>:<Register setUid={setUid}/>} />
             <Route path='/login' element={uid?<Navigate to='/profile'/>:<Login setUid={setUid}/>} />
-            <Route path='/Profiles/:profileID' element={<SellerDetails uid={uid}/>}/>
+            <Route path='/Profiles/:profileID' element={<DisplayProfile />}/>
         </Routes>
     
     
